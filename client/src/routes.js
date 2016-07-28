@@ -13,8 +13,8 @@ export default (
   <Route path="/" component={App}>
     <Route path="login" component={Login} />
     <Route path="record/question" component={RecordQuestion} />
-    <Route path="record/answer" component={RecordAnswer} />
     <Route path="qa/:id" component={Topic} />
+    <Route path="qa/:id/answer" component={RecordAnswer} />
     <Route path="*" component={Error} />
   </Route>
 );
