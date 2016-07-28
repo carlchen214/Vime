@@ -14,7 +14,7 @@ export let Home = function (props) {
           <Link to="/login" className="btn-large waves-effect waves-light blue darken-1">Login/Signup</Link>
         </div>
         <div className="row">
-          <Link to="/record" id="download-button" className="btn-large waves-effect waves-light blue darken-1">Ask a question</Link>
+          <Link to="/record/question" id="download-button" className="btn-large waves-effect waves-light blue darken-1">Ask a question</Link>
         </div>
       </div>
       <div className="section">
