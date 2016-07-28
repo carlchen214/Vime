@@ -9,12 +9,14 @@ export default class Topic extends React.Component {
     super(props)
     this.state = {
       code: this.props.params.id
+      // questionUrl
+      // answers
     }
   }
 
   componentDidMount() {
     // find the correct question object by using params.id to match the code in this.props.questionsById
-    // set this to url to state, so it can be passed down into video src
+    // set this url to state, so it can be passed down into video src
     // find answers urls, so they can be passed down into video grid
   }
 
@@ -25,8 +27,8 @@ export default class Topic extends React.Component {
           <h4 className="center-align">Question</h4>
         </div>
 
-        <div key={video.id} className="col s8 offset-s2">
-            <video controls src={video.url} width="100%"/>
+        <div className="col s8 offset-s2">
+            <video controls src={this.state.questionUrl} width="100%"/>
         </div>
 
         <br />
@@ -36,7 +38,7 @@ export default class Topic extends React.Component {
           <h4 className="center-align">Answers</h4>
         </div>
         
-        <AnswerVideoGrid videos={}/>
+        <AnswerVideoGrid videos={this.state.answers}/>
 
       </div>
     )
