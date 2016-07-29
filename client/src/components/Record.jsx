@@ -25,7 +25,7 @@ export default class Record extends React.Component {
   componentDidMount() {
     this.checkUserProtocol();
     this.requestUserMedia(); 
-    this.speechToText();
+    this.startSpeech();
   }
 
   render() {
@@ -55,8 +55,20 @@ export default class Record extends React.Component {
     });
   }
 
-  speechToText(){
-    
+  startSpeech(){
+    if ('webkitSpeechRecognition' in window) {
+      var recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      /* 
+      The default value for continuous is false, meaning that when the user stops talking, speech recognition will end. This mode is great for simple text like short input fields. In this demo, we set it to true, so that recognition will continue even if the user pauses while speaking.
+      */
+      recognition.interimResults = true;
+
+      recognition.onstart = function() { ... }
+      recognition.onresult = function(event) { ... }
+      recognition.onerror = function(event) { ... }
+      recognition.onend = function() { ... }
+    }
   }
 
   checkUserProtocol() {
