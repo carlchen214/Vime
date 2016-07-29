@@ -17,15 +17,18 @@ export default class Record extends React.Component {
       link: '',
       finishedRecording: false,
       uploading: false,
+      intervalHandle: null,
+      speechRecognition: null,
       formText: '',
-      intervalHandle: null   
+      finalTranscript: '',
+      isListening: false
     };
   }
 
   componentDidMount() {
     this.checkUserProtocol();
     this.requestUserMedia(); 
-    this.startSpeech();
+    this.loadSpeech();
   }
 
   render() {
@@ -37,7 +40,10 @@ export default class Record extends React.Component {
         <div>
           <br/>
           <form>
-          <input value={this.state.formText} onChange={e => {this.handleFormText(e)}}/>
+          <div className="input-field">
+            <textarea id="question-text" className="materialize-textarea" value={this.state.finalTranscript} onChange={e => {this.handleTextChange(e)}}> </textarea>
+            <label htmlFor="question-text">Your question</label>
+          </div>
           </form>
           <a className="waves-effect waves-light btn blue darken-1" id="record" onClick={this.toggleRec.bind(this)}>{this.state.toggleRecText}</a>
           <a className={this.state.finishedRecording ? 'waves-effect waves-light btn blue darken-1' : 'hide waves-effect waves-light btn blue darken-1'} id="upload" onClick={this.uploadRec.bind(this)}>Submit</a>
@@ -49,25 +55,60 @@ export default class Record extends React.Component {
     );
   }
 
-  handleFormText(e) {
+  handleTextChange(e) {
     this.setState({
-      formText: e.target.value
+      finalTranscript: e.target.value
     });
   }
 
-  startSpeech(){
+  startSpeech(event) {
+    this.setState({
+      finalTranscript: '',
+      isListening: true
+    }) 
+    // this.state.speechRecognition.lang = select_dialect.value;
+    // ^ not needed, default is whatever language set on HTML file
+    console.log('START SPEECH');
+
+    this.state.speechRecognition.start();
+  }
+
+  stopSpeech(event) {
+    this.setState({
+      isListening: false
+    });
+    console.log('STOP SPEECH');
+    this.state.speechRecognition.stop();
+  }
+
+  loadSpeech(){
+    // https://developers.google.com/web/updates/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API
     if ('webkitSpeechRecognition' in window) {
-      var recognition = new webkitSpeechRecognition();
-      recognition.continuous = true;
+      var speechRecognition = new webkitSpeechRecognition();
+      speechRecognition.continuous = true;
       /* 
       The default value for continuous is false, meaning that when the user stops talking, speech recognition will end. This mode is great for simple text like short input fields. In this demo, we set it to true, so that recognition will continue even if the user pauses while speaking.
       */
-      recognition.interimResults = true;
+      speechRecognition.interimResults = true;
 
-      recognition.onstart = function() { ... }
-      recognition.onresult = function(event) { ... }
-      recognition.onerror = function(event) { ... }
-      recognition.onend = function() { ... }
+      speechRecognition.onstart = function() {};
+      speechRecognition.onresult = function(event) {
+        var interimTranscript = '';
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            this.setState({
+              finalTranscript: this.state.finalTranscript + event.results[i][0].transcript
+            });
+          } else {
+            interimTranscript += event.results[i][0].transcript;
+          }
+        }
+      }.bind(this);
+      speechRecognition.onerror = function(event) {};
+      speechRecognition.onend = function() {};
+      this.setState({
+        speechRecognition: speechRecognition
+      })
     }
   }
 
@@ -123,6 +164,11 @@ export default class Record extends React.Component {
       this.stopRec();
     } else {
       this.startRec();
+    }
+    if (!this.state.isListening) {
+      this.startSpeech(event);
+    } else {
+      this.stopSpeech(event);
     }
   }
 
