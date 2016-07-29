@@ -17,6 +17,7 @@ export default class Record extends React.Component {
       link: '',
       finishedRecording: false,
       uploading: false,
+      formText: '',
       intervalHandle: null   
     };
   }
@@ -24,6 +25,7 @@ export default class Record extends React.Component {
   componentDidMount() {
     this.checkUserProtocol();
     this.requestUserMedia(); 
+    this.speechToText();
   }
 
   render() {
@@ -34,6 +36,9 @@ export default class Record extends React.Component {
         <video className={this.state.finishedRecording ? '' : 'hide'} id="recorded" src={this.state.recVidUrl} width="100%"></video>
         <div>
           <br/>
+          <form>
+          <input value={this.state.formText} onChange={e => {this.handleFormText(e)}}/>
+          </form>
           <a className="waves-effect waves-light btn blue darken-1" id="record" onClick={this.toggleRec.bind(this)}>{this.state.toggleRecText}</a>
           <a className={this.state.finishedRecording ? 'waves-effect waves-light btn blue darken-1' : 'hide waves-effect waves-light btn blue darken-1'} id="upload" onClick={this.uploadRec.bind(this)}>Submit</a>
         </div>
@@ -42,6 +47,16 @@ export default class Record extends React.Component {
         </div>
       </div>
     );
+  }
+
+  handleFormText(e) {
+    this.setState({
+      formText: e.target.value
+    });
+  }
+
+  speechToText(){
+    
   }
 
   checkUserProtocol() {

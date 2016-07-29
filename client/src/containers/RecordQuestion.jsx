@@ -21,7 +21,10 @@ class RecordQuestion extends React.Component {
 
   render(){
     return (
-      <div><Record addToState={this.addToState} apiUrl={'/api/questions'} userId={this.props.userId}/></div>
+      <div>
+        <h1>What's your question?</h1>
+        <Record addToState={this.addToState} apiUrl={'/api/questions'} userId={this.props.userId}/>
+      </div>
     );
   }
 }
