@@ -6,6 +6,7 @@ import { addQuestion } from './../actions/questionAction.jsx';
 import Chip from 'material-ui/Chip';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { union } from 'lodash';
 injectTapEventPlugin();
 
 
@@ -73,8 +74,14 @@ class RecordQuestion extends React.Component {
     var data = data.split(' ');
     // console.log('BEFORE FILTER', data);
     data = data.filter(tag => tag.length > 4);
+    // filtering out words with length of 3 or less
+    data = union(data);
+    // union is from lodash, returns just unique values
+
+    // console.log(nlp.tags(data));
     // use a better filter to parse out nouns, people, places
     // http://nlp-compromise.github.io/website/#demos 
+    
     // console.log('AFTER', data);
 
     var tagData = [];

@@ -72,7 +72,7 @@ export default class Record extends React.Component {
     }) 
     // this.state.speechRecognition.lang = select_dialect.value;
     // ^ not needed, default is whatever language set on HTML file
-    console.log('START SPEECH');
+    // console.log('START SPEECH');
 
     this.state.speechRecognition.start();
   }
@@ -81,7 +81,7 @@ export default class Record extends React.Component {
     this.setState({
       isListening: false
     });
-    console.log('STOP SPEECH');
+    // console.log('STOP SPEECH');
     this.state.speechRecognition.stop();
   }
 
@@ -119,7 +119,7 @@ export default class Record extends React.Component {
   }
 
   checkUserProtocol() {
-    console.log('inside checkUserProtocol');
+    // console.log('inside checkUserProtocol');
 
     let isSecureOrigin = location.protocol === 'https:' || location.host === 'localhost:3000';
     if (!isSecureOrigin) {
@@ -131,7 +131,7 @@ export default class Record extends React.Component {
 
 
   requestUserMedia() {
-    console.log('inside requestUserMedia');
+    // console.log('inside requestUserMedia');
 
     //Use native web api for Media Recorder (https://developers.google.com/web/updates/2016/01/mediarecorder)
     //to get the user audio and video
@@ -143,11 +143,11 @@ export default class Record extends React.Component {
   }
 
   handleConnect(stream) {
-    console.log('inside handleConnect');
+    // console.log('inside handleConnect');
 
     //Set the stream state
     //Take user media and create a url that will be added to the video tag src in the DOM
-    console.log('Stream connected');
+    // console.log('Stream connected');
     this.setState({
       stream: stream,
       streamVidUrl: window.URL.createObjectURL(stream)
@@ -155,14 +155,14 @@ export default class Record extends React.Component {
   }
 
   handleError(error) {
-    console.log('inside handleError');
+    // console.log('inside handleError');
 
     //Catch and log error on request of user media
     console.log('error in request of user media:', error);
   }
 
   toggleRec() {
-    console.log('inside toggleRec');
+    // console.log('inside toggleRec');
 
     //If the user is recording invoke stopRec
     //else invoke startRec if the user is not recording
@@ -179,7 +179,7 @@ export default class Record extends React.Component {
   }
 
   startRec() {
-    console.log('inside startRec');
+    // console.log('inside startRec');
     if (!this.state.stream) {
       this.requestUserMedia()
         .then(() => {
@@ -211,7 +211,7 @@ export default class Record extends React.Component {
   }
 
   handleDataAvailable(event) {
-    console.log('inside handleDataAvailable');
+    // console.log('inside handleDataAvailable');
 
     //If there is data add the data to the blobs array
     if (event.data && event.data.size > 0) {
@@ -222,7 +222,7 @@ export default class Record extends React.Component {
   }
 
   stopRec() {
-    console.log('inside stopRec');
+    // console.log('inside stopRec');
 
 
     //Stop the mediaRecorder and toggle
@@ -251,7 +251,7 @@ export default class Record extends React.Component {
   }
 
   uploadRec() {
-    console.log('inside uploadRec');
+    // console.log('inside uploadRec');
 
     //Set the uploading to true to show the loader bar
     this.setState({
