@@ -8,12 +8,13 @@ export default class SpeechTags extends React.Component {
   render() {
     return (
       <div>
-      {tags.map((tag) => {
-        <div key={tag.id}>tag.value</div>
-        <br />
-      })}
+      {this.props.tags.length > 0 ? <h4>Select tags</h4> : null}
+      {this.props.tags.map((tag, i) => 
+        <div key={i}>{tag}
+        </div>
+      )}
       </div>
-    )
+    );
   }
 }
 

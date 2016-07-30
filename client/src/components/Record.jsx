@@ -39,12 +39,6 @@ export default class Record extends React.Component {
         <video className={this.state.finishedRecording ? '' : 'hide'} id="recorded" src={this.state.recVidUrl} width="100%"></video>
         <div>
           <br/>
-          <form>
-          <div className="input-field">
-            <textarea id="question-text" className="materialize-textarea" value={this.state.finalTranscript} onChange={e => {this.handleTextChange(e)}}> </textarea>
-            <label htmlFor="question-text">Your question</label>
-          </div>
-          </form>
           <a className="waves-effect waves-light btn blue darken-1" id="record" onClick={this.toggleRec.bind(this)}>{this.state.toggleRecText}</a>
           <a className={this.state.finishedRecording ? 'waves-effect waves-light btn blue darken-1' : 'hide waves-effect waves-light btn blue darken-1'} id="upload" onClick={this.uploadRec.bind(this)}>Submit</a>
         </div>
@@ -54,6 +48,16 @@ export default class Record extends React.Component {
       </div>
     );
   }
+
+/*
+  For trying to transcribe the entire question, but not worth it because speech analysis isn't good enough. 
+  <form>
+  <div className="input-field">
+    <textarea id="question-text" className="materialize-textarea" value={this.state.finalTranscript} onChange={e => {this.handleTextChange(e)}}> </textarea>
+    <label htmlFor="question-text">Your question</label>
+  </div>
+  </form>
+*/
 
   handleTextChange(e) {
     this.setState({
@@ -105,7 +109,9 @@ export default class Record extends React.Component {
         }
       }.bind(this);
       speechRecognition.onerror = function(event) {};
-      speechRecognition.onend = function() {};
+      speechRecognition.onend = function() {
+        this.props.addTags(this.state.finalTranscript);
+      }.bind(this);
       this.setState({
         speechRecognition: speechRecognition
       })
